@@ -641,6 +641,7 @@ in
   ###### implementation
 
   config = mkIf cfg.enable {
+    services.displayManager.enable = true;
 
     services.xserver.displayManager.lightdm.enable =
       let dmConf = cfg.displayManager;
@@ -651,15 +652,6 @@ in
                     || dmConf.startx.enable
                     || config.services.greetd.enable);
       in mkIf (default) (mkDefault true);
-
-    # so that the service won't be enabled when only startx is used
-    systemd.services.display-manager.enable  =
-      let dmConf = cfg.displayManager;
-          noDmUsed = !(dmConf.gdm.enable
-                    || dmConf.sddm.enable
-                    || dmConf.xpra.enable
-                    || dmConf.lightdm.enable);
-      in mkIf (noDmUsed) (mkDefault false);
 
     hardware.opengl.enable = mkDefault true;
 
