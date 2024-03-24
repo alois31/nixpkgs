@@ -263,14 +263,14 @@ in
       daemon = mkMerge [
         { WaylandEnable = cfg.gdm.wayland; }
         # nested if else didn't work
-        (mkIf (cfg.autoLogin.enable && cfg.gdm.autoLogin.delay != 0 ) {
+        (mkIf (config.services.displayManager.autoLogin.enable && cfg.gdm.autoLogin.delay != 0 ) {
           TimedLoginEnable = true;
-          TimedLogin = cfg.autoLogin.user;
+          TimedLogin = config.services.displayManager.autoLogin.user;
           TimedLoginDelay = cfg.gdm.autoLogin.delay;
         })
         (mkIf (config.services.displayManager.autoLogin.enable && cfg.gdm.autoLogin.delay == 0 ) {
           AutomaticLoginEnable = true;
-          AutomaticLogin = cfg.autoLogin.user;
+          AutomaticLogin = config.services.displayManager.autoLogin.user;
         })
       ];
       debug = mkIf cfg.gdm.debug {
